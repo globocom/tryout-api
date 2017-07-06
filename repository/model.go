@@ -1,7 +1,7 @@
 package repository
 
 type Repository struct {
-	Name      string `bson:"_id"`
+	Name      string
 	Challenge string
 	Steps     []Step
 	Version   int
