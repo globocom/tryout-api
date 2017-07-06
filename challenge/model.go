@@ -1,10 +1,12 @@
 package challenge
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
 	"../db"
@@ -77,9 +79,16 @@ func (c *Challenge) createApp() error {
 
 func (c *Challenge) setRepo(repo string) error {
 	baseURL := "http://tsuru.globoi.com"
-	env := map[string]string{"Name": "REPO", "Value": repo}
+	j, err := json.Marshal(c.Paths)
+	if err != nil {
+		return err
+	}
 	envs := map[string]interface{}{
-		"Envs": []map[string]string{env},
+		"Envs": []map[string]string{
+			map[string]string{"Name": "REPO", "Value": repo},
+			map[string]string{"Name": "PATHS", "Value": string(j)},
+			map[string]string{"Name": "API_URL", "Value": os.Getenv("API_URL")},
+		},
 	}
 	v, err := form.EncodeToValues(&envs)
 	if err != nil {
