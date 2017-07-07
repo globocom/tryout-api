@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -52,4 +53,18 @@ func repoStepRegister(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	w.WriteHeader(http.StatusOK)
+}
+
+func repoTryouts(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	fmt.Printf("%#v\n", vars)
+	var repos []repository.Repository
+	err := db.Coll("repo").Find(bson.M{"name": vars["repo"]}).Sort("-_id").All(&repos)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(err.Error()))
+		return
+	}
+	reposJson, err := json.Marshal(repos)
+	w.Write(reposJson)
 }

@@ -10,5 +10,6 @@ func Server() *mux.Router {
 	s.HandleFunc("/challenge", challengeCreate).Methods("POST")
 	s.HandleFunc("/challenge/{challenge}/try", challengeTry).Methods("GET")
 	s.HandleFunc("/challenge/{challenge}/{repo}/step", repoStepRegister).Methods("POST")
+	s.HandleFunc("/challenge/{challenge}/{repo}", repoTryouts).Methods("GET")
 	return s
 }
