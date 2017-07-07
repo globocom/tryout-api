@@ -89,6 +89,7 @@ func (c *Challenge) setRepo(repo string) error {
 			map[string]string{"Name": "REPO", "Value": repo},
 			map[string]string{"Name": "PATHS", "Value": string(j)},
 			map[string]string{"Name": "API_URL", "Value": os.Getenv("API_URL")},
+			map[string]string{"Name": "CHALLENGE_NAME", "Value": c.Slug},
 		},
 	}
 	v, err := form.EncodeToValues(&envs)

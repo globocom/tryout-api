@@ -52,6 +52,13 @@ func repoStepRegister(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(err.Error()))
 		return
 	}
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("http://tsuru.globoi.com/apps/%s", vars["challenge"]), nil)
+	if err != nil {
+		w.Write([]byte(err.Error()))
+	}
+	req.Header.Set("Authorization", fmt.Sprintf("bearer acbea31b589a270ec856569d9f0b6c88c23bb6a96c66ac5bcb1f7f54d12b1d69"))
+	c := http.Client{}
+	_, err = c.Do(req)
 	w.WriteHeader(http.StatusOK)
 }
 
