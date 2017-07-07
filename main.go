@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
-	db.DialDB()
+	err := db.DialDB()
+	if err != nil {
+		panic(err)
+	}
 	defer db.DbSession.Close()
-	http.ListenAndServe(":8080", api.Server())
+	http.ListenAndServe("0.0.0.0:8888", api.Server())
 }
