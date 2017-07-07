@@ -19,6 +19,7 @@ const token string = "acbea31b589a270ec856569d9f0b6c88c23bb6a96c66ac5bcb1f7f54d1
 type Path struct {
 	Path       string `json:"path"`
 	HttpStatus int    `json:"http_status"`
+	HttpMethod string `json:"http_method"`
 	Throughput int    `json:"throughput"`
 	Input      string `json:"input"`
 	Output     string `json:"output"`
@@ -27,7 +28,7 @@ type Path struct {
 type Challenge struct {
 	Slug  string `bson:"_id"`
 	Name  string `json:"name"`
-	Paths []Path `json:"paths"`
+	Paths []Path `json:"endpoints"`
 }
 
 func Create(c Challenge) error {
@@ -114,7 +115,7 @@ func (c *Challenge) setRepo(repo string) error {
 func (c *Challenge) deployChallenge() error {
 	baseURL := "http://tsuru.globoi.com"
 	v := url.Values{}
-	v.Set("image", "tryout/agent")
+	v.Set("image", "docker.artifactory.globoi.com/tryout/agent")
 	v.Set("origin", "image")
 	req, err := http.NewRequest("POST", fmt.Sprintf("%s/apps/%s/deploy", baseURL, c.Slug), strings.NewReader(v.Encode()))
 	if err != nil {
