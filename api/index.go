@@ -12,6 +12,7 @@ to create a new challenge use POST /challenge with {
 			'input': 'json string',
 			'output': 'string output',
 			'http_status': http status,
+			'http_method': 'get',
 			'throughput': requests/sec,
 		}
 	]
